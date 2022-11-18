@@ -1,0 +1,21 @@
+version: '2.1'
+services:
+  
+    keycloak:
+      image: quay.io/keycloak/keycloak:20.0
+      container_name: "keycloak"
+      command: ["start-dev", "--import-realm"]
+      environment:
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+      ports:
+        - 8085:8080
+      volumes:
+      - ./keycloak-import:/opt/keycloak/data/import:ro
+      networks:
+      - gateway-local
+
+networks:
+  gateway-local:
+    driver: bridge
+    name: gateway-local

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package helloworld;
+
+option go_package = "github.com/mvgeny/gateway/pkg";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// https://github.com/grpc-ecosystem/grpc-gateway/blob/master/examples/internal/proto/examplepb/a_bit_of_everything.proto
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  security_definitions: {
+    security: {
+      key: "OAuth2";
+      value: {
+        type: TYPE_OAUTH2;
+        flow: FLOW_IMPLICIT;
+        authorization_url: "http://127.0.0.1:8085/realms/gateway/protocol/openid-connect/auth";
+      }
+    }
+  }
+  security: {
+    security_requirement: {
+      key: "OAuth2";
+    }
+  }
+  info: {
+    title: "Playground";
+    description: "description";
+    version: "1.0";
+  };
+};
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/example/echo"
+      body: "*"
+    };
+  }
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
