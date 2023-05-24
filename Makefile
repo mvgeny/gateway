@@ -1,4 +1,4 @@
-generate:
+gen:
 	cd api; buf generate
 
 run:
